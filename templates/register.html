@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastro - POUPA{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h3 class="text-center">Cadastro</h3>
+            <form method="POST" action="{{ url_for('register') }}">
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome</label>
+                    <input type="text" class="form-control" id="nome" name="nome" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" pattern=".+@(gmail|outlook)\.com" title="Somente são aceitos emails @gmail.com ou @outlook.com" required>
+                    <small class="form-text text-muted">Aceitamos apenas e-mails @gmail.com ou @outlook.com</small>
+                </div>
+                <div class="mb-3 position-relative">
+                    <label for="senha" class="form-label">Senha</label>
+                    <input type="password" class="form-control" id="senha" name="senha" minlength="8" pattern="(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}" title="A senha deve conter no mínimo 8 caracteres, incluindo uma letra maiúscula, uma minúscula, um número e um símbolo especial" required>
+                    <i class="bi bi-eye-slash" id="togglePassword" style="position: absolute; right: 10px; top: 38px; cursor: pointer;"></i>
+                    <small class="form-text text-muted">A senha deve ter no mínimo 8 caracteres, contendo uma letra maiúscula, uma minúscula, um número e um símbolo especial.</small>
+                </div>
+                <div class="mb-3">
+                    <label for="usage" class="form-label">Para o que você deseja usar o POUPA?</label>
+                    <select id="usage" name="usage" class="form-select">
+                        <option>Poupar tempo e dinheiro de um jeito fácil e prático para controle das minhas finanças</option>
+                        <option>Poupar tempo e dinheiro de um jeito fácil e divertido para controle das minhas finanças e aquele rolê final de semana</option>
+                    </select>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                </div>
+            </form>
+            <p class="text-center mt-3">Já tem uma conta? <a href="{{ url_for('login') }}">Login</a></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const password = document.querySelector('#senha');
+
+    togglePassword.addEventListener('click', function (e) {
+        const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+        password.setAttribute('type', type);
+
+        this.classList.toggle('bi-eye');
+        this.classList.toggle('bi-eye-slash');
+    });
+</script>
+{% endblock %}

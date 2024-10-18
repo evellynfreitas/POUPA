@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}POUPA - Controle de Gastos{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 text-center">
+        <h1 class="mb-4">Bem-vindo ao POUPA!</h1>
+        <p class="lead">Controle suas finanças de forma simples, divertida e acessível para todos!</p>
+        <p class="text-muted">💡 Você sabia? Mais de 61% dos brasileiros não conseguem poupar dinheiro mensalmente, e milhões enfrentam dificuldades com ferramentas financeiras complexas ou inacessíveis.</p>
+        <p class="mb-4">Aqui no POUPA, oferecemos uma solução inclusiva e prática, pensada especialmente para quem precisa de uma abordagem fácil, eficiente e sem complicações. Não importa se você está começando a organizar suas finanças ou quer otimizar seus gastos: o POUPA é para você!</p>
+
+        <h3>Por que o POUPA é diferente?</h3>
+        <ul class="list-unstyled mt-3">
+            <li><i class="bi bi-check-circle"></i> Acessível para todos — Criado para ser usado por qualquer tipo de pessoa, seja iniciante ou já experiente em finanças.</li>
+            <li><i class="bi bi-check-circle"></i> Simples e intuitivo — Descomplique sua vida financeira com funcionalidades práticas e fáceis de usar.</li>
+            <li><i class="bi bi-check-circle"></i> Divertido — Controle suas finanças enquanto se prepara para aquele rolê no fim de semana.</li>
+        </ul>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-5">
+            <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Cadastre-se Agora</a>
+            <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-lg">Já tem uma conta? Faça Login</a>
+        </div>
+    </div>
+</div>
+
+<!-- Seção de Benefícios -->
+<div class="row justify-content-center mt-5">
+    <div class="col-md-4 text-center">
+        <div class="card p-4">
+            <h3 class="card-title">Controle Completo</h3>
+            <p class="card-text">Gerencie suas finanças com uma interface amigável e inclusiva, feita para todos.</p>
+        </div>
+    </div>
+    <div class="col-md-4 text-center">
+        <div class="card p-4">
+            <h3 class="card-title">Acessível para Todos</h3>
+            <p class="card-text">Totalmente acessível, pensado para quem precisa de recursos especiais, como leitores de tela e fontes maiores.</p>
+        </div>
+    </div>
+    <div class="col-md-4 text-center">
+        <div class="card p-4">
+            <h3 class="card-title">Divertido e Eficiente</h3>
+            <p class="card-text">Além de ser funcional, o POUPA permite que você se prepare para o fim de semana sem preocupações financeiras.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
