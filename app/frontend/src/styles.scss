@@ -1,1 +1,84 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --c-beige: #F8EDD9;
+  --c-green: #2C8952;
+  --text-green-special-50: #69AF7A;
+  --c-orange: #DD5C36;
+}
+
+.color-beige {
+  color: #F8EDD9;
+}
+
+.text-green-special-50 {
+  color: #69AF7A;
+}
+
+.text-green-special {
+  color: #2C8952;
+}
+
+.text-orange-special {
+  color: #DD5C36;
+}
+
+.bg-beige-special {
+  background-color: #F8EDD9;
+}
+
+.bg-green-special {
+  background-color: #2C8952;
+}
+
+.bg-orange-special {
+  background-color: #DD5C36;
+}
+
+.bg-yellow-special {
+  background-color: #F0BE49;
+}
+
+.font-anton {
+  font-family: "Anton", sans-serif;
+}
+
+.font-poppins {
+  font-family: "Poppins", sans-serif;
+}
+
+.font-roboto {
+  font-family: "Roboto", sans-serif;
+}
+
+/* h1 {
+  color: #DD5C36;
+  font-family: var(--f-family-anton);
+}
+
+.form-group {
+  display: grid;
+  grid-template-areas: "label" "control";
+  width: 100%;
+}
+
+.form-group + .form-group {
+  margin-top: 1rem;
+}
+
+.form-label {
+  grid-area: label;
+  color: var(--c-orange);
+  font-family: var(--f-family-poppins);
+  font-weight: var(--t-weight-bold);
+  line-height: 1;
+}
+
+.form-control {
+  grid-area: control;
+  font-family: var(--f-family-anton);
+  width: 100%;
+} */
