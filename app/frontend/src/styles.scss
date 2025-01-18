@@ -4,81 +4,110 @@
 @tailwind utilities;
 
 :root {
-  --c-beige: #F8EDD9;
-  --c-green: #2C8952;
-  --text-green-special-50: #69AF7A;
-  --c-orange: #DD5C36;
+  --color-beige: #F8EDD9;
+  --color-yellow: #F0BE49;
+  --color-orange: #DD5C36;
+  --color-green-light: #69AF7A;
+  --color-green-normal: #2C8952;
+  --color-green-medium: #327039;
+  --color-green-dark: #133020;
 }
 
-.color-beige {
-  color: #F8EDD9;
+/* COLORS */
+.text-beige {
+  color: var(--color-beige) !important;
 }
 
-.text-green-special-50 {
-  color: #69AF7A;
+.text-yellow {
+  color: var(--color-yellow) !important;
 }
 
-.text-green-special {
-  color: #2C8952;
+.text-orange {
+  color: var(--color-orange) !important;
 }
 
-.text-orange-special {
-  color: #DD5C36;
+.text-green-light {
+  color: var(--color-green-light) !important;
 }
 
-.bg-beige-special {
-  background-color: #F8EDD9;
+.text-green-normal {
+  color: var(--color-green-normal) !important;
 }
 
-.bg-green-special {
-  background-color: #2C8952;
+.text-green-medium {
+  color: var(--color-green-medium) !important;
 }
 
-.bg-orange-special {
-  background-color: #DD5C36;
+.text-green-dark {
+  color: var(--color-green-dark) !important;
 }
 
-.bg-yellow-special {
-  background-color: #F0BE49;
+
+/* BG-COLORS */
+.bg-beige {
+  background-color: var(--color-beige) !important;
 }
 
+.bg-yellow {
+  background-color: var(--color-yellow) !important;
+}
+
+.bg-orange {
+  background-color: var(--color-orange) !important;
+}
+
+.bg-green-light {
+  background-color: var(--color-green-light) !important;
+}
+
+.bg-green-normal {
+  background-color: var(--color-green-normal) !important;
+}
+
+.bg-green-medium {
+  background-color: var(--color-green-medium) !important;
+}
+
+.bg-green-dark {
+  background-color: var(--color-green-dark) !important;
+}
+
+
+/* FONTS */
 .font-anton {
-  font-family: "Anton", sans-serif;
+  font-family: "Anton", sans-serif !important;
 }
 
 .font-poppins {
-  font-family: "Poppins", sans-serif;
+  font-family: "Poppins", sans-serif !important;
 }
 
 .font-roboto {
-  font-family: "Roboto", sans-serif;
+  font-family: "Roboto", sans-serif !important;
 }
 
-/* h1 {
-  color: #DD5C36;
-  font-family: var(--f-family-anton);
+
+/* BASIC STYLES */
+.btn {
+  @apply bg-blue-700 w-full max-w-[160px] text-lg font-poppins font-semibold text-white py-2 rounded-bl-xl;
 }
 
 .form-group {
-  display: grid;
-  grid-template-areas: "label" "control";
-  width: 100%;
-}
-
-.form-group + .form-group {
-  margin-top: 1rem;
+  @apply flex flex-col gap-1 w-full;
 }
 
 .form-label {
-  grid-area: label;
-  color: var(--c-orange);
-  font-family: var(--f-family-poppins);
-  font-weight: var(--t-weight-bold);
-  line-height: 1;
+  @apply font-poppins text-orange text-xl font-bold;
 }
 
 .form-control {
-  grid-area: control;
-  font-family: var(--f-family-anton);
-  width: 100%;
-} */
+  @apply h-12 w-full rounded-lg font-roboto text-gray-800 text-lg text-center focus:outline-[var(--color-green-light)] focus:outline-4;
+}
+
+.title-xl {
+  @apply font-anton text-orange text-5xl;
+}
+
+.subtitle {
+  @apply font-anton text-green-normal text-2xl mt-6 text-center;
+}
