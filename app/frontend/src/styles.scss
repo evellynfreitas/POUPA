@@ -1,1 +1,113 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-beige: #F8EDD9;
+  --color-yellow: #F0BE49;
+  --color-orange: #DD5C36;
+  --color-green-light: #69AF7A;
+  --color-green-normal: #2C8952;
+  --color-green-medium: #327039;
+  --color-green-dark: #133020;
+}
+
+/* COLORS */
+.text-beige {
+  color: var(--color-beige) !important;
+}
+
+.text-yellow {
+  color: var(--color-yellow) !important;
+}
+
+.text-orange {
+  color: var(--color-orange) !important;
+}
+
+.text-green-light {
+  color: var(--color-green-light) !important;
+}
+
+.text-green-normal {
+  color: var(--color-green-normal) !important;
+}
+
+.text-green-medium {
+  color: var(--color-green-medium) !important;
+}
+
+.text-green-dark {
+  color: var(--color-green-dark) !important;
+}
+
+
+/* BG-COLORS */
+.bg-beige {
+  background-color: var(--color-beige) !important;
+}
+
+.bg-yellow {
+  background-color: var(--color-yellow) !important;
+}
+
+.bg-orange {
+  background-color: var(--color-orange) !important;
+}
+
+.bg-green-light {
+  background-color: var(--color-green-light) !important;
+}
+
+.bg-green-normal {
+  background-color: var(--color-green-normal) !important;
+}
+
+.bg-green-medium {
+  background-color: var(--color-green-medium) !important;
+}
+
+.bg-green-dark {
+  background-color: var(--color-green-dark) !important;
+}
+
+
+/* FONTS */
+.font-anton {
+  font-family: "Anton", sans-serif !important;
+}
+
+.font-poppins {
+  font-family: "Poppins", sans-serif !important;
+}
+
+.font-roboto {
+  font-family: "Roboto", sans-serif !important;
+}
+
+
+/* BASIC STYLES */
+.btn {
+  @apply bg-blue-700 w-full max-w-[160px] text-lg font-poppins font-semibold text-white py-2 rounded-bl-xl;
+}
+
+.form-group {
+  @apply flex flex-col gap-1 w-full;
+}
+
+.form-label {
+  @apply font-poppins text-orange text-xl font-bold;
+}
+
+.form-control {
+  @apply h-12 w-full rounded-lg font-roboto text-gray-800 text-lg text-center focus:outline-[var(--color-green-light)] focus:outline-4;
+}
+
+.title-xl {
+  @apply font-anton text-orange text-5xl;
+}
+
+.subtitle {
+  @apply font-anton text-green-normal text-2xl mt-6 text-center;
+}
