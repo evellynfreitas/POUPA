@@ -11,19 +11,19 @@
       <form class="flex flex-col justify-center items-center mx-10 gap-4">
         <div class="form-group max-w-[320px]">
           <label for="name" class="form-label">Nome:</label>
-          <input type="text" id="name" name="name" class="form-control">
+          <input [(ngModel)]="nome" type="text" id="name" name="name" class="form-control">
         </div>
         <div class="form-group max-w-[320px]">
           <label for="email" class="form-label">Email:</label>
-          <input type="email" id="email" name="email" class="form-control">
+          <input [(ngModel)]="email" type="email" id="email" name="email" class="form-control">
         </div>
         <div class="form-group max-w-[320px]">
           <label for="password" class="form-label">Senha:</label>
-          <input type="password" id="password" name="password" class="form-control">
+          <input [(ngModel)]="senha" type="password" id="password" name="password" class="form-control">
         </div>
       </form>
       <div class="flex flex-col justify-start items-center mt-5 gap-2">
-        <button class="btn bg-yellow">Cadastre-se</button>
+        <button (click)="register()" class="btn bg-yellow">Cadastre-se</button>
       </div>
     </div>
   </div>
