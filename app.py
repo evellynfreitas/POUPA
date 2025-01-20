@@ -1,4 +1,3 @@
-from flask_migrate import Migrate
 import jwt
 from datetime import datetime, timedelta
 from flask import Flask, request, jsonify
@@ -16,7 +15,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Inicializando o banco de dados com o app
 db.init_app(app)
-migrate = Migrate(app, db)
 
 @app.route('/register', methods=['POST'])
 def register():
