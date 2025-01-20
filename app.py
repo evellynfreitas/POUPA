@@ -6,7 +6,7 @@ from backend.models import Sessao, db, Usuario, Transacao
 from flask_cors import CORS
 
 # Cria instância do servidor
-app = Flask(__name__, template_folder='backend/templates')
+app = Flask(__name__)
 cors = CORS(app)
 
 app.config['SECRET_KEY'] = 'sua_chave_secreta'
@@ -100,10 +100,34 @@ def logout():
     except jwt.InvalidTokenError:
         return jsonify({'message': 'Token inválido!'}), 401
 
-@app.before_request
 @app.route('/verify', methods=['GET'])
-def verificar_token():
-    if request.endpoint in ['login', 'register', 'logout']:
+def verificar_sessao():
+    token = request.headers.get('Authorization')
+
+    if not token:
+        return jsonify({'message': 'Token não fornecido!'}), 401
+
+    try:
+        token = token.replace('Bearer ', '')
+
+        decoded_token = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+        usuario_id = decoded_token['id_usuario']
+
+        sessao = Sessao.query.filter_by(token=token, id_usuario=usuario_id).first()
+
+        if not sessao or sessao.expirado_em < datetime.utcnow():
+            return jsonify({'message': 'Sessão inválida ou expirada!'}), 401
+        
+        return jsonify({'message': 'Sessão válida!'}), 200
+
+    except jwt.ExpiredSignatureError:
+        return jsonify({'message': 'Token expirado!'}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({'message': 'Token inválido!'}), 401
+
+@app.before_request
+def verificar_sessao_interceptor():
+    if request.endpoint in ['login', 'register', 'logout', 'verify']:
         return
     
     token = request.headers.get('Authorization')
