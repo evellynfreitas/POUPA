@@ -20,23 +20,45 @@ db.init_app(app)
 def register():
     dados = request.get_json()
 
+    # Extração de dados do JSON
     nome = dados.get('nome')
     email = dados.get('email')
     senha = dados.get('senha')
 
-    if not nome or not email or not senha:
-        return jsonify({'message': 'Campos nome, email e senha são obrigatórios!'}), 400
+    # Verificações dos campos obrigatórios
+    if not nome or not nome.strip():
+        return jsonify({'message': 'O campo nome é obrigatório e não pode estar vazio!'}), 400
 
+    if not email or not email.strip():
+        return jsonify({'message': 'O campo email é obrigatório e não pode estar vazio!'}), 400
+
+    if not senha or not senha.strip():
+        return jsonify({'message': 'O campo senha é obrigatório e não pode estar vazio!'}), 400
+
+    # Validação de formato de email (simples)
+    import re
+    email_regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+    if not re.match(email_regex, email):
+        return jsonify({'message': 'O email fornecido não é válido!'}), 400
+
+    # Verificação se o email já está cadastrado
+    if Usuario.query.filter_by(email=email).first():
+        return jsonify({'message': 'O email já está cadastrado no sistema!'}), 409
+
+    # Verificação de requisitos mínimos para a senha
+    if len(senha) < 8:
+        return jsonify({'message': 'A senha precisa ter pelo menos 8 caracteres!'}), 400
+
+    # Criptografia da senha
     senha_protegida = generate_password_hash(senha, method='scrypt')
 
-    if Usuario.query.filter_by(email=email).first():
-        return jsonify({'message': 'Usuário já existe!'}), 409
-
+    # Criação de novo usuário
     usuario_novo = Usuario(email=email, senha=senha_protegida, nome=nome)
     db.session.add(usuario_novo)
     db.session.commit()
 
     return jsonify({'message': 'Cadastro realizado com sucesso!'}), 201
+
 
 @app.route('/login', methods=['POST'])
 def login():
