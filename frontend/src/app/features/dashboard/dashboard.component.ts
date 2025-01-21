@@ -3,12 +3,12 @@ import { Router } from "@angular/router";
 import { AuthService } from "../../shared/services/auth.service";
 
 @Component({
-  selector: "home",
-  templateUrl: "./home.component.html",
-  styleUrl: "./home.component.scss",
-  providers: [AuthService],
+  selector: "dashboard",
+  templateUrl: "./dashboard.component.html",
+  styleUrl: "./dashboard.component.scss",
+  providers: [AuthService]
 })
-export class HomeComponent {
+export class DashboardComponent {
 
   constructor(
     private readonly authService: AuthService,
@@ -21,15 +21,18 @@ export class HomeComponent {
         this.router.navigate(["dashboard"]);
       }, () => {
         this.authService.clearToken();
+        this.router.navigate(["entrar"]);
       });
     }
   }
-
-  redirecionarCadastro(): void {
-    this.router.navigate(["cadastro"]);
+  
+  logout(): void {
+    this.authService.logout(() => {
+      this.authService.clearToken();
+      this.router.navigate(["entrar"]);
+    }, (error) => {
+      console.log(error);
+    });
   }
 
-  redirecionarLogin(): void {
-    this.router.navigate(["entrar"]);
-  }
 }
