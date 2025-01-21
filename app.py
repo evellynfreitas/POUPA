@@ -192,6 +192,36 @@ def transaction():
         except Exception as e:
             return jsonify({'message': f'Ocorreu um erro: {str(e)}'}), 500
 
+
+@app.route('/transaction', methods=['GET'])
+def get_transactions():
+    try:
+        id_usuario = request.args.get('id_usuario')
+
+        if not id_usuario:
+            return jsonify({'message': 'O campo id_usuario é obrigatório!'}), 400
+
+        transacoes = Transacao.query.filter_by(id_usuario=id_usuario).all()
+
+        if not transacoes:
+            return jsonify({'message': 'Nenhuma transação encontrada para este usuário!'}), 404
+
+        resultado = [
+            {
+                'id': transacao.id,
+                'descricao': transacao.descricao,
+                'valor': transacao.valor,
+                'tipo_transacao': transacao.tipo_transacao,
+                'categoria': transacao.categoria,
+                'criado_em': transacao.criado_em.strftime('%Y-%m-%d %H:%M:%S')
+            } for transacao in transacoes
+        ]
+
+        return jsonify({'transacoes': resultado}), 200
+
+    except Exception as e:
+        return jsonify({'message': f'Ocorreu um erro: {str(e)}'}), 500
+    
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
