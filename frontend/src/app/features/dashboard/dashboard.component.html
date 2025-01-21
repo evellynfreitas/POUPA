@@ -1,27 +1,29 @@
-<main class="bg-beige w-screen h-screen">
-  <div class="grid grid-cols-[auto_1fr] h-full">
+<main class="bg-beige w-100">
+  <div class="grid grid-cols-[auto_1fr] min-h-screen">
     <aside class="bg-green-medium flex flex-col gap-2">
       <nav class="mt-12">
-        <ul class="flex flex-col items-center gap-6">
-          <li class="px-6"><span class="font-anton w-8 text-5xl text-beige">P</span></li>
-          <li class="px-6">
-            <button><img src="/dashboards.png" class="font-anton w-8 text-5xl text-beige"></button>
+        <ul class="flex flex-col items-center gap-4 lg:gap-6">
+          <li class="px-4 lg:px-6">
+            <span class="font-anton w-6 text-3xl lg:w-8 lg:text-5xl text-beige">P</span>
           </li>
-          <li class="px-6">
-            <button><i><img src="/expense.png" class="font-anton w-8 text-5xl text-beige"></i></button>
+          <li class="px-4 lg:px-6" [class]="isAbaAtual(OpcaoDashboardEnum.PRINCIPAL) ? 'border-l-4 border-[var(--color-beige)]' : ''">
+            <button (click)="alterarAbaVisualizacao(OpcaoDashboardEnum.PRINCIPAL)"><img src="/dashboards.png" class="font-anton w-6 lg:w-8 text-5xl text-beige"></button>
           </li>
-          <li class="px-6">
-            <button><i><img src="/coins.png" class="font-anton w-8 text-5xl text-beige"></i></button>
+          <li class="px-4 lg:px-6" [class]="isAbaAtual(OpcaoDashboardEnum.DESPESAS) ? 'border-l-4 border-[var(--color-beige)]' : ''">
+            <button (click)="alterarAbaVisualizacao(OpcaoDashboardEnum.DESPESAS)"><i><img src="/expense.png" class="font-anton w-6 lg:w-8 text-5xl text-beige"></i></button>
           </li>
-          <li class="px-6">
-            <button><i><img src="/do-utilizador.png" class="font-anton w-8 text-5xl text-beige"></i></button>
+          <li class="px-4 lg:px-6">
+            <button><i><img src="/coins.png" class="font-anton w-6 lg:w-8 text-5xl text-beige"></i></button>
+          </li>
+          <li class="px-4 lg:px-6">
+            <button><i><img src="/do-utilizador.png" class="font-anton w-6 lg:w-8 text-5xl text-beige"></i></button>
           </li>
         </ul>
       </nav>
     </aside>
-    <div>
-      <header>
-        <div class="max-w-screen-xl mx-auto grid grid-cols-[1fr_auto] px-6 py-8 justify-center">
+    <div class="px-6 py-8">
+      <header class="mb-6">
+        <div class="max-w-screen-xl mx-auto grid grid-cols-[1fr_auto] justify-center">
           <div class="flex items-center justify-center">
             <button class="min-w-40 border-2 border-[var(--color-orange)] rounded-full py-2 font-poppins text-orange font-semibold">MÊS</button>
           </div>
@@ -31,8 +33,9 @@
         </div>
       </header>
       <main>
-        <div class="max-w-screen-xl mx-auto px-6 py-8">
-          <dashboard-home></dashboard-home>
+        <div class="max-w-screen-xl mx-auto">
+          <dashboard-principal *ngIf="isAbaAtual(OpcaoDashboardEnum.PRINCIPAL)"></dashboard-principal>
+          <dashboard-despesas *ngIf="isAbaAtual(OpcaoDashboardEnum.DESPESAS)"></dashboard-despesas>
         </div>
       </main>
     </div>
