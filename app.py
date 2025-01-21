@@ -167,7 +167,7 @@ def transaction():
             return jsonify({'message': f'Ocorreu um erro: {str(e)}'}), 500
 
 
-@app.route('/transaction', methods=['GET'])
+@app.route('/transactions', methods=['GET'])
 def get_transactions():
     try:
         id_usuario = request.args.get('id_usuario')

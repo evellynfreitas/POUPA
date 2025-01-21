@@ -1,12 +1,14 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { AuthService } from "../../shared/services/auth.service";
+import { DashboardHomeComponent } from "../dashboard-home/dashboard-home.component";
 
 @Component({
   selector: "dashboard",
   templateUrl: "./dashboard.component.html",
   styleUrl: "./dashboard.component.scss",
-  providers: [AuthService]
+  providers: [AuthService],
+  imports: [DashboardHomeComponent]
 })
 export class DashboardComponent {
 
