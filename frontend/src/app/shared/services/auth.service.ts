@@ -66,6 +66,22 @@ export class AuthService {
     });
   }
 
+  public getUser(
+    successCallback: (response: any) => void,
+    errorCallback: (error: any) => void
+  ) {
+    const URL = `${this.BASE_URL}/user`;
+
+    this.httpClient.get(URL, {
+      headers: this.getHeaders({
+        "Authorization": `Bearer ${this.getToken()}`
+      })
+    }).subscribe({
+      next: successCallback,
+      error: errorCallback
+    });
+  }
+
   public verify(
     successCallback: (response: any) => void,
     errorCallback: (error: any) => void

@@ -124,6 +124,42 @@ def verificar_sessao():
         return jsonify({'message': 'Token expirado!'}), 401
     except jwt.InvalidTokenError:
         return jsonify({'message': 'Token inválido!'}), 401
+    
+@app.route('/user', methods=['GET'])
+def get_user():
+    token = request.headers.get('Authorization')
+
+    if not token:
+        return jsonify({'message': 'Token não fornecido!'}), 401
+    
+    try:
+        token = token.replace('Bearer ', '')
+
+        decoded_token = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+        usuario_id = decoded_token['id_usuario']
+
+        sessao = Sessao.query.filter_by(token=token, id_usuario=usuario_id).first()
+
+        if not sessao or sessao.expirado_em < datetime.utcnow():
+            return jsonify({'message': 'Sessão inválida ou expirada!'}), 401
+        
+        id_usuario = sessao.id_usuario
+        usuario = Usuario.query.filter_by(id=id_usuario).first()
+
+        if not usuario:
+            return jsonify({'message': 'Usuário não encontrado!'}), 404
+        
+        json = {
+            'id': usuario.id,
+            'nome': usuario.nome,
+            'email': usuario.email
+        }
+        
+        return jsonify({'message': 'Usuário encontrado!', 'usuario': json })
+    except jwt.ExpiredSignatureError:
+        return jsonify({'message': 'Token expirado!'}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({'message': 'Token inválido!'}), 401
 
 @app.route('/transaction', methods=['GET', 'POST'])
 def transaction():
@@ -133,9 +169,9 @@ def transaction():
 
             descricao = dados.get('descricao')
             valor = dados.get('valor')
-            tipo_transacao = dados.get('tipo_transacao')
+            tipo_transacao = dados.get('tipoTransacao')
             categoria = dados.get('categoria')
-            id_usuario = dados.get('id_usuario')
+            id_usuario = dados.get('idUsuario')
 
             if not descricao or not valor or not tipo_transacao or not categoria or not id_usuario:
                 return jsonify({'message': 'Todos os campos são obrigatórios!'}), 400
@@ -170,24 +206,37 @@ def transaction():
 @app.route('/transactions', methods=['GET'])
 def get_transactions():
     try:
-        id_usuario = request.args.get('id_usuario')
+        id_usuario = int(request.args.get('id_usuario'))
+        dia_inicio = int(request.args.get('dia_inicio'))
+        mes_inicio = int(request.args.get('mes_inicio'))
+        ano_inicio = int(request.args.get('ano_inicio'))
+        dia_fim = int(request.args.get('dia_fim'))
+        mes_fim = int(request.args.get('mes_fim'))
+        ano_fim = int(request.args.get('ano_fim'))
 
         if not id_usuario:
             return jsonify({'message': 'O campo id_usuario é obrigatório!'}), 400
 
-        transacoes = Transacao.query.filter_by(id_usuario=id_usuario).all()
+        data_inicio = datetime(ano_inicio, mes_inicio, dia_inicio)
+        data_fim = datetime(ano_fim, mes_fim, dia_fim)
+
+        transacoes = Transacao.query.filter(
+            Transacao.id_usuario == id_usuario
+        ).filter(
+            Transacao.criado_em.between(data_inicio, data_fim)
+        ).all()
 
         if not transacoes:
-            return jsonify({'message': 'Nenhuma transação encontrada para este usuário!'}), 404
+            return jsonify({'transacoes': []}), 200
 
         resultado = [
             {
                 'id': transacao.id,
                 'descricao': transacao.descricao,
                 'valor': transacao.valor,
-                'tipo_transacao': transacao.tipo_transacao,
+                'tipoTransacao': transacao.tipo_transacao,
                 'categoria': transacao.categoria,
-                'criado_em': transacao.criado_em.strftime('%Y-%m-%d %H:%M:%S')
+                'criadoEm': transacao.criado_em.strftime('%Y-%m-%d %H:%M:%S')
             } for transacao in transacoes
         ]
 

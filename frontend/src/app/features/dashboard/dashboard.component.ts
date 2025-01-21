@@ -1,3 +1,4 @@
+import { TransacaoService } from './../../shared/services/transacao.service';
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { AuthService } from "../../shared/services/auth.service";
@@ -5,30 +6,72 @@ import { DashboardPrincipalComponent } from "../dashboard-principal/dashboard-pr
 import { OpcaoDashboardEnum } from "./models/OpcaoDashboardEnum";
 import { CommonModule } from "@angular/common";
 import { DashboardDespesasComponent } from "../dashboard-despesas/dashboard-despesas.component";
+import { UsuarioDTO } from "../../shared/models/usuario-dto";
+import { TransacaoDTO } from '../../shared/models/transacao-dto';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { ModalMesAnoComponent } from '../modal-mes-ano/modal-mes-ano.component';
 
 @Component({
   selector: "dashboard",
   templateUrl: "./dashboard.component.html",
   styleUrl: "./dashboard.component.scss",
-  providers: [AuthService],
+  providers: [AuthService, TransacaoService],
   imports: [CommonModule, DashboardPrincipalComponent, DashboardDespesasComponent]
 })
 export class DashboardComponent {
 
+  mesAnoFiltragem: {
+    diaInicio: number,
+    mesInicio: number,
+    anoInicio: number,
+    diaFim: number,
+    mesFim: number,
+    anoFim: number,
+    mesString?: string
+  };
   abaAtual: OpcaoDashboardEnum = OpcaoDashboardEnum.PRINCIPAL;
+  usuario: UsuarioDTO;
+  listaTransacoes: TransacaoDTO[];
+
+  private modalRef: NgbModalRef;
 
   constructor(
     private readonly authService: AuthService,
-    private readonly router: Router
+    private readonly transacaoService: TransacaoService,
+    private readonly router: Router,
+    private readonly modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
     if (this.authService.isLoggedIn()) {
       this.authService.verify(() => {
+        const dateTimeNow = new Date();
+        const dateTimeMoreOneMonth = new Date();
+        dateTimeMoreOneMonth.setMonth(dateTimeMoreOneMonth.getMonth() + 1);
+  
+        this.mesAnoFiltragem = {
+          diaInicio: dateTimeNow.getDate(),
+          mesInicio: dateTimeNow.getMonth() + 1,
+          anoInicio: dateTimeNow.getFullYear(),
+          diaFim: dateTimeMoreOneMonth.getDate(),
+          mesFim: dateTimeMoreOneMonth.getMonth() + 1,
+          anoFim: dateTimeMoreOneMonth.getFullYear(),
+          mesString: this.definirMesString(dateTimeNow.getMonth())
+        }
+
+        this.authService.getUser((response) => {
+          this.usuario = response.usuario;
+
+          this.transacaoService.getListaTransacoes(this.usuario.id, this.mesAnoFiltragem, (response) => {
+            this.listaTransacoes = response.transacoes;
+          }, () => {});
+        }, () => {});
       }, () => {
         this.authService.clearToken();
         this.router.navigate(["entrar"]);
       });
+    } else {
+      this.router.navigate(["entrar"]);
     }
   }
 
@@ -47,6 +90,49 @@ export class DashboardComponent {
     }, (error) => {
       console.log(error);
     });
+  }
+
+  abrirModalMesAno(): void {
+    this.modalRef = this.modalService.open(ModalMesAnoComponent);
+
+    this.modalRef.result.then((mesAno) => {
+      const dateTimeMoreOneMonth = new Date();
+      dateTimeMoreOneMonth.setMonth(dateTimeMoreOneMonth.getMonth() + 1);
+
+      this.mesAnoFiltragem = {
+        diaInicio: 1,
+        mesInicio: Number(mesAno.mes),
+        anoInicio: Number(mesAno.ano),
+        diaFim: dateTimeMoreOneMonth.getDate(),
+        mesFim: dateTimeMoreOneMonth.getMonth() + 1,
+        anoFim: dateTimeMoreOneMonth.getFullYear(),
+      };
+
+      this.mesAnoFiltragem.mesString = this.definirMesString(this.mesAnoFiltragem.mesInicio);
+
+      this.transacaoService.getListaTransacoes(this.usuario.id, this.mesAnoFiltragem, (response) => {
+        this.listaTransacoes = response.transacoes;
+      }, () => {});
+    }).catch(() => {});
+  }
+
+  private definirMesString(mes: number): string {
+    switch (mes) {
+      case 0: return "Janeiro";
+      case 1: return "Fevereiro";
+      case 2: return "Março";
+      case 3: return "Abril";
+      case 4: return "Maio";
+      case 5: return "Junho";
+      case 6: return "Julho";
+      case 7: return "Agosto";
+      case 8: return "Setembro";
+      case 9: return "Outubro";
+      case 10: return "Novembro";
+      case 11: return "Dezembro";
+
+      default: return null;
+    }
   }
 
   get OpcaoDashboardEnum(): typeof OpcaoDashboardEnum {

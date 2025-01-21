@@ -2,34 +2,28 @@
 <div class="grid sm:grid-cols-6 sm:grid-rows-[auto_auto_auto] md:grid-rows-[auto_auto] items-center gap-6 md:gap-8 mt-6">
   <div class="h-full bg-white sm:col-span-3 lg:col-span-2 px-6 py-4 rounded-2xl text-orange font-poppins flex flex-col justify-center gap-1">
     <h2 class="text-xl">Total de Despesas</h2>
-    <span class="text-xl font-bold">R$ 1.500,00</span>
+    <span class="text-xl font-bold">R$ {{ formataValor(definirTotalDespesa(listaTransacoes)) }}</span>
   </div>
   <div class="h-full sm:col-span-3">
-    <button class="bg-orange text-lg font-poppins font-semibold text-beige px-6 py-4 rounded-2xl w-full sm:w-auto">Adicionar <br class="hidden sm:block">Despesa</button>
+    <button (click)="abrirModalDespesa()" class="bg-orange text-lg font-poppins font-semibold text-beige px-6 py-4 rounded-2xl w-full sm:w-auto">Adicionar <br class="hidden sm:block">Despesa</button>
   </div>
   <div class="h-full bg-white sm:col-span-6 px-6 py-4 rounded-2xl text-orange font-poppins overflow-x-scroll md:overflow-hidden">
     <h2 class="text-xl mb-1">Extrato das Despesas</h2>
     <table class="w-[600px] md:mt-4 md:w-full md:max-w-4xl mx-auto">
       <thead class="text-green-normal border-[var(--color-green-normal)] border-b-2">
         <tr>
-          <th class="px-4 py-2 text-left">Nome</th>
+          <th class="px-4 py-2 text-left">Descrição</th>
           <th class="px-4 py-2 text-center">Categoria</th>
           <th class="px-4 py-2 text-center">Despesa Fixa?</th>
           <th class="px-4 py-2 text-right">Valor</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td class="px-4 pt-2 text-left">McDonalds</td>
-          <td class="px-4 pt-2 text-center"></td>
-          <td class="px-4 pt-2 text-center"></td>
-          <td class="px-4 pt-2 font-semibold text-right">R$ 50,00</td>
-        </tr>
-        <tr>
-          <td class="px-4 pt-2 text-left">Aluguel</td>
-          <td class="px-4 pt-2 text-center">Casa</td>
-          <td class="px-4 pt-2 text-center">X</td>
-          <td class="px-4 pt-2 font-semibold text-right">R$ 1.050,00</td>
+      <tbody *ngFor="let transacao of listaTransacoes">
+        <tr *ngIf="transacao.tipoTransacao.startsWith('Despesa')">
+          <td class="px-4 pt-2 text-left">{{ transacao.descricao }}</td>
+          <td class="px-4 pt-2 text-center">{{ transacao.categoria }}</td>
+          <td class="px-4 pt-2 text-center">{{ transacao.tipoTransacao === "Despesa Fixa" ? 'X' : '' }}</td>
+          <td class="px-4 pt-2 font-semibold text-right">R$ {{ formataValor(transacao.valor) }}</td>
         </tr>
       </tbody>
     </table>

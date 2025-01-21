@@ -21,6 +21,7 @@
           <label for="password" class="form-label">Senha:</label>
           <input [(ngModel)]="senha" type="password" id="password" name="password" class="form-control">
         </div>
+        <p class="text-red-800 font-semibold font-poppins">{{ mensagemErro }}</p>
       </form>
       <div class="flex flex-col justify-start items-center mt-5 gap-2">
         <button (click)="register()" class="btn bg-yellow">Cadastre-se</button>
