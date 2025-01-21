@@ -25,8 +25,8 @@ export class ModalMesAnoComponent {
       this.mensagemErro = "Dados inválidos!";
     } else {
       this.activeModal.close({
-        mes: this.mes,
-        ano: this.ano
+        mesInicio: this.mes,
+        anoInicio: this.ano
       });
     }
   }

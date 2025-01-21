@@ -51,10 +51,10 @@ export class DashboardComponent {
   
         this.mesAnoFiltragem = {
           diaInicio: dateTimeNow.getDate(),
-          mesInicio: dateTimeNow.getMonth() + 1,
+          mesInicio: dateTimeNow.getMonth(),
           anoInicio: dateTimeNow.getFullYear(),
           diaFim: dateTimeMoreOneMonth.getDate(),
-          mesFim: dateTimeMoreOneMonth.getMonth() + 1,
+          mesFim: dateTimeMoreOneMonth.getMonth(),
           anoFim: dateTimeMoreOneMonth.getFullYear(),
           mesString: this.definirMesString(dateTimeNow.getMonth())
         }
@@ -96,21 +96,24 @@ export class DashboardComponent {
     this.modalRef = this.modalService.open(ModalMesAnoComponent);
 
     this.modalRef.result.then((mesAno) => {
-      const dateTimeMoreOneMonth = new Date();
-      dateTimeMoreOneMonth.setMonth(dateTimeMoreOneMonth.getMonth() + 1);
+      const dateTimeNow = new Date(mesAno.anoInicio, mesAno.mesInicio, 1);
+      const dateTimeTwo = new Date(dateTimeNow);
 
-      this.mesAnoFiltragem = {
-        diaInicio: 1,
-        mesInicio: Number(mesAno.mes),
-        anoInicio: Number(mesAno.ano),
-        diaFim: dateTimeMoreOneMonth.getDate(),
-        mesFim: dateTimeMoreOneMonth.getMonth() + 1,
-        anoFim: dateTimeMoreOneMonth.getFullYear(),
+      dateTimeTwo.setMonth(dateTimeTwo.getMonth() + 1);
+
+      const mesAnoFiltragem = {
+        diaInicio: dateTimeNow.getDate(),
+        mesInicio: dateTimeNow.getMonth(),
+        anoInicio: dateTimeNow.getFullYear(),
+        diaFim: dateTimeTwo.getDate(),
+        mesFim: dateTimeTwo.getMonth(),
+        anoFim: dateTimeTwo.getFullYear(),
+        mesString: this.definirMesString(dateTimeNow.getMonth())
       };
 
-      this.mesAnoFiltragem.mesString = this.definirMesString(this.mesAnoFiltragem.mesInicio);
+      this.mesAnoFiltragem = mesAnoFiltragem;
 
-      this.transacaoService.getListaTransacoes(this.usuario.id, this.mesAnoFiltragem, (response) => {
+      this.transacaoService.getListaTransacoes(this.usuario.id, mesAnoFiltragem, (response) => {
         this.listaTransacoes = response.transacoes;
       }, () => {});
     }).catch(() => {});

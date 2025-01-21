@@ -21,10 +21,10 @@ export class TransacaoService {
 
     if (mesAnoConfig != null) {
       URL += `&dia_inicio=${mesAnoConfig.diaInicio}`;
-      URL += `&mes_inicio=${mesAnoConfig.mesInicio}`;
+      URL += `&mes_inicio=${mesAnoConfig.mesInicio + 1}`;
       URL += `&ano_inicio=${mesAnoConfig.anoInicio}`;
       URL += `&dia_fim=${mesAnoConfig.diaFim}`;
-      URL += `&mes_fim=${mesAnoConfig.mesFim}`;
+      URL += `&mes_fim=${mesAnoConfig.mesFim + 1}`;
       URL += `&ano_fim=${mesAnoConfig.anoFim}`;
     }
 
