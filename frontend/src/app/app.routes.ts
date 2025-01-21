@@ -1,8 +1,15 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './features/login/login.component';
-import { SignupComponent } from './features/signup/signup.component';
+import { CadastroComponent } from './features/cadastro/cadastro.component';
+import { HomeComponent } from './features/home/home.component';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
 
 export const routes: Routes = [
+  {
+    path: "home",
+    pathMatch: "full",
+    component: HomeComponent
+  },
   {
     path: "entrar",
     pathMatch: "full",
@@ -11,6 +18,11 @@ export const routes: Routes = [
   {
     path: "cadastro",
     pathMatch: "full",
-    component: SignupComponent
+    component: CadastroComponent
+  },
+  {
+    path: "dashboard",
+    pathMatch: "full",
+    component: DashboardComponent
   }
 ];

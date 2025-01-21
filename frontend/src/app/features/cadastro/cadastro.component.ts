@@ -1,17 +1,18 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "../../shared/services/auth.service";
-import { FormsModule } from "@angular/forms";
+import { FormsModule } from '@angular/forms';
 import { Router } from "@angular/router";
 
 @Component({
-  selector: "login",
-  templateUrl: "./login.component.html",
-  styleUrl: "./login.component.scss",
+  selector: "cadastro",
+  templateUrl: "./cadastro.component.html",
+  styleUrl: "./cadastro.component.scss",
   providers: [AuthService],
   imports: [FormsModule]
 })
-export class LoginComponent implements OnInit {
-  
+export class CadastroComponent implements OnInit {
+
+  nome: string = null;
   email: string = null;
   senha: string = null;
 
@@ -30,22 +31,16 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  entrar(): void {
-    this.authService.login({
+  register(): void {
+    this.authService.register({
+      nome: this.nome,
       email: this.email,
       senha: this.senha
-    }, (response) => {
-      if (response.token) {
-        this.authService.storeToken(response.token);
-        this.router.navigate(["dashboard"]);
-      }
+    }, () => {
+      this.router.navigate(["entrar"]);
     }, (error) => {
       console.log(error);
     });
-  }
-
-  redirecionarCadastro(): void {
-    this.router.navigate(["cadastro"]);
   }
 
 }
