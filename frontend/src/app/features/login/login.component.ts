@@ -15,6 +15,8 @@ export class LoginComponent implements OnInit {
   email: string = null;
   senha: string = null;
 
+  mensagemErro: string;
+
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router
@@ -40,7 +42,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(["dashboard"]);
       }
     }, (error) => {
-      console.log(error);
+      this.mensagemErro = error.error.message;
     });
   }
 

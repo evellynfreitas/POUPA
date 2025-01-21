@@ -1,4 +1,4 @@
-<main class="bg-beige w-100">
+<main *ngIf="usuario && listaTransacoes" class="bg-beige w-100">
   <div class="grid grid-cols-[auto_1fr] min-h-screen">
     <aside class="bg-green-medium flex flex-col gap-2">
       <nav class="mt-12">
@@ -25,17 +25,17 @@
       <header class="mb-6">
         <div class="max-w-screen-xl mx-auto grid grid-cols-[1fr_auto] justify-center">
           <div class="flex items-center justify-center">
-            <button class="min-w-40 border-2 border-[var(--color-orange)] rounded-full py-2 font-poppins text-orange font-semibold">MÊS</button>
+            <button *ngIf="mesAnoFiltragem" (click)="abrirModalMesAno()" class="min-w-40 border-2 border-[var(--color-orange)] rounded-full py-2 font-poppins text-orange font-semibold">{{ mesAnoFiltragem.mesString }}</button>
           </div>
           <div>
-            <button class="min-w-20 bg-orange text-white rounded-bl-2xl px-8 py-2 font-poppins">Olá, NOME</button>
+            <button (click)="logout()" class="min-w-20 bg-orange text-white rounded-bl-2xl px-8 py-2 font-poppins">Olá, {{ usuario.nome }}!</button>
           </div>
         </div>
       </header>
       <main>
         <div class="max-w-screen-xl mx-auto">
-          <dashboard-principal *ngIf="isAbaAtual(OpcaoDashboardEnum.PRINCIPAL)"></dashboard-principal>
-          <dashboard-despesas *ngIf="isAbaAtual(OpcaoDashboardEnum.DESPESAS)"></dashboard-despesas>
+          <dashboard-principal *ngIf="isAbaAtual(OpcaoDashboardEnum.PRINCIPAL)" [listaTransacoes]="listaTransacoes"></dashboard-principal>
+          <dashboard-despesas *ngIf="isAbaAtual(OpcaoDashboardEnum.DESPESAS)" [listaTransacoes]="listaTransacoes" [idUsuario]="usuario.id"></dashboard-despesas>
         </div>
       </main>
     </div>

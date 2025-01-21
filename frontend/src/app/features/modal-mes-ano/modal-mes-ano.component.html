@@ -1,0 +1,35 @@
+<div class="grid grid-cols-[3rem_1fr]">
+  <div class="bg-orange"></div>
+  <div class="bg-beige p-4">
+    <h2 class="font-poppins text-2xl text-orange font-semibold">Nova Despesa</h2>
+    <div class="grid gap-4 mt-4">
+      <div class="flex flex-col gap-1 items-start justify-start">
+        <label for="mes" class="text-orange text-lg">Mês</label>
+        <select [(ngModel)]="mes" name="mes" id="mes" class="text-xl text-gray-950 px-6 py-2 rounded-xl">
+          <option [value]=""></option>
+          <option [value]="0">JANEIRO</option>
+          <option [value]="1">FEVEREIRO</option>
+          <option [value]="2">MARÇO</option>
+          <option [value]="3">ABRIL</option>
+          <option [value]="4">MAIO</option>
+          <option [value]="5">JUNHO</option>
+          <option [value]="6">JULHO</option>
+          <option [value]="7">AGOSTO</option>
+          <option [value]="8">SETEMBRO</option>
+          <option [value]="9">OUTUBRO</option>
+          <option [value]="10">NOVEMBRO</option>
+          <option [value]="11">DEZEMRO</option>
+        </select>
+      </div>
+      <div class="flex flex-col gap-1 items-start justify-start">
+        <label for="ano" class="text-orange text-lg">Ano</label>
+        <input [(ngModel)]="ano" type="text" id="ano" name="ano" class="text-xl text-gray-950 px-6 py-2 rounded-xl">
+      </div>
+      <p class="text-red-800 font-semibold font-poppins">{{ mensagemErro }}</p>
+    </div>
+    <div class="flex justify-end items-end gap-2 mt-4">
+      <button (click)="activeModal.dismiss()" class="text-lg font-poppins font-semibold text-orange rounded-bl-3xl px-6 py-2 bg-[transparent_!important]">Fechar</button>
+      <button (click)="salvarDespesa()" class="text-lg font-poppins font-semibold text-white rounded-bl-3xl bg-orange px-6 py-2">Salvar</button>
+    </div>
+  </div>
+</div>

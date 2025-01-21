@@ -16,6 +16,8 @@ export class CadastroComponent implements OnInit {
   email: string = null;
   senha: string = null;
 
+  mensagemErro: string;
+
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router
@@ -39,7 +41,7 @@ export class CadastroComponent implements OnInit {
     }, () => {
       this.router.navigate(["entrar"]);
     }, (error) => {
-      console.log(error);
+      this.mensagemErro = error.error.message;
     });
   }
 

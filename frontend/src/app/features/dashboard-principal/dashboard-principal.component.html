@@ -2,19 +2,19 @@
 <div class="grid sm:grid-cols-6 sm:grid-rows-[auto_auto_auto] md:grid-rows-[auto_auto] items-center gap-6 md:gap-8 mt-6">
   <div class="h-full bg-white sm:col-span-2 px-6 py-4 rounded-2xl text-orange font-poppins flex flex-col justify-center gap-1">
     <h2 class="text-xl">Saldo Atual</h2>
-    <span class="text-xl font-bold">R$ 1.500,00</span>
+    <span class="text-xl font-bold">R$ {{ formataValor(definirSaldoTotal(listaTransacoes)) }}</span>
   </div>
   <div class="h-full bg-white sm:col-span-2 px-6 py-4 rounded-2xl text-orange font-poppins flex items-center">
     <div class="flex-auto">
       <h2 class="text-xl">Total de Despesas</h2>
-      <span class="text-xl font-bold">R$ 100,00</span>
+      <span class="text-xl font-bold">R$ {{ formataValor(definirTotalDespesa(listaTransacoes)) }}</span>
     </div>
     <img src="seta-para-a-direita (1).png" class="block sm:hidden md:block rotate-90 max-h-14">
   </div>
   <div class="h-full bg-white sm:col-span-2 px-6 py-4 rounded-2xl text-orange font-poppins flex items-center">
     <div class="flex-auto">
       <h2 class="text-xl">Receita</h2>
-      <span class="text-xl font-bold">R$ 1.600,00</span>
+      <span class="text-xl font-bold">R$ {{ formataValor(definirSaldoTotal(listaTransacoes) - definirTotalDespesa(listaTransacoes)) }}</span>
     </div>
     <img src="seta-para-a-direita.png" class="block sm:hidden md:block -rotate-90 max-h-14">
   </div>
@@ -28,42 +28,26 @@
           <th class="text-right">Despesa (R$)</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody *ngFor="let grupo of agruparTransacoesPorCategoria(listaTransacoes)">
         <tr>
-          <td class="text-left">Alimentação</td>
-          <td class="text-center">20%</td>
-          <td class="text-right">20,00</td>
-        </tr>
-        <tr>
-          <td class="text-left">Transporte</td>
-          <td class="text-center">15%</td>
-          <td class="text-right">15,00</td>
-        </tr>
-        <tr>
-          <td class="text-left">Entretenimento</td>
-          <td class="text-center">10%</td>
-          <td class="text-right">10,00</td>
+          <td class="text-left">{{ grupo.categoria }}</td>
+          <td class="text-center">{{ grupo.percentual.toFixed(2) }} %</td>
+          <td class="text-right">{{ formataValor(grupo.valorTotal) }}</td>
         </tr>
       </tbody>
     </table>
   </div>
   <div class="h-full bg-white sm:col-span-6 md:col-span-3 px-6 py-4 rounded-2xl text-orange font-poppins">
     <h2 class="text-lg mb-1">Extrato</h2>
-    <ul class="text-xl grid gap-2" style="line-height: 1;">
+    <ul *ngFor="let transacao of listaTransacoes" class="text-xl grid gap-2" style="line-height: 1;">
       <li class="grid grid-cols-[auto_1fr_auto] items-center gap-2">
-        <img src="seta-para-a-direita (1).png" class="block sm:hidden md:block rotate-90 max-h-10">
-        <div>McDonalds<br><span class="text-sm">Alimentação</span></div>
-        <span class="font-semibold">R$ 50,00</span>
-      </li>
-      <li class="grid grid-cols-[auto_1fr_auto] items-center gap-2">
-        <img src="seta-para-a-direita (1).png" class="block sm:hidden md:block rotate-90 max-h-10">
-        <div>Aluguel<br><span class="text-sm">Despesa Fixa</span></div>
-        <span class="font-semibold">R$ 1.050,00</span>
-      </li>
-      <li class="grid grid-cols-[auto_1fr_auto] items-center gap-2">
-        <img src="seta-para-a-direita.png" class="block sm:hidden md:block -rotate-90 max-h-10">
-        <div>Salário</div>
-        <span class="font-semibold">R$ 2.800,00</span>
+        <img [src]="transacao.tipoTransacao.startsWith('Despesa') ?
+            'seta-para-a-direita (1).png' : 'seta-para-a-direita.png'"
+          [class]="transacao.tipoTransacao.startsWith('Despesa') ? 
+            'block sm:hidden md:block rotate-90 max-h-10' : 'block sm:hidden md:block -rotate-90 max-h-10'"
+        >
+        <div>{{ transacao.descricao }}<br *ngIf="transacao.categoria"><span *ngIf="transacao.categoria" class="text-sm">{{ transacao.categoria }}</span></div>
+        <span class="font-semibold">R$ {{ formataValor(transacao.valor) }}</span>
       </li>
     </ul>
   </div>
