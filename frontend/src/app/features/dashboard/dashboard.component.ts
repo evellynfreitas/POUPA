@@ -9,7 +9,7 @@ import { DashboardDespesasComponent } from "../dashboard-despesas/dashboard-desp
 import { UsuarioDTO } from "../../shared/models/usuario-dto";
 import { TransacaoDTO } from '../../shared/models/transacao-dto';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { ModalMesAnoComponent } from '../modal-mes-ano/modal-mes-ano.component';
+import { ModalConfiguracaoPeriodoAnalise } from '../modal-configuracao-periodo-analise/modal-configuracao-periodo-analise.component';
 
 @Component({
   selector: "dashboard",
@@ -20,13 +20,9 @@ import { ModalMesAnoComponent } from '../modal-mes-ano/modal-mes-ano.component';
 })
 export class DashboardComponent {
 
-  mesAnoFiltragem: {
-    diaInicio: number,
-    mesInicio: number,
-    anoInicio: number,
-    diaFim: number,
-    mesFim: number,
-    anoFim: number,
+  configuracaoPeriodoAnalise: {
+    dataInicialString: string,
+    dataFinalString: string,
     mesString?: string
   };
   abaAtual: OpcaoDashboardEnum = OpcaoDashboardEnum.PRINCIPAL;
@@ -46,26 +42,32 @@ export class DashboardComponent {
     if (this.authService.isLoggedIn()) {
       this.authService.verify(() => {
         const dateTimeNow = new Date();
-        const dateTimeMoreOneMonth = new Date();
-        dateTimeMoreOneMonth.setMonth(dateTimeMoreOneMonth.getMonth() + 1);
-  
-        this.mesAnoFiltragem = {
-          diaInicio: dateTimeNow.getDate(),
-          mesInicio: dateTimeNow.getMonth(),
-          anoInicio: dateTimeNow.getFullYear(),
-          diaFim: dateTimeMoreOneMonth.getDate(),
-          mesFim: dateTimeMoreOneMonth.getMonth(),
-          anoFim: dateTimeMoreOneMonth.getFullYear(),
-          mesString: this.definirMesString(dateTimeNow.getMonth())
+        dateTimeNow.setDate(1);
+
+        const dataInicialString = dateTimeNow.toISOString().split("T").at(0);
+
+        dateTimeNow.setMonth(dateTimeNow.getMonth() + 1);
+        dateTimeNow.setDate(dateTimeNow.getDate() - 1);
+        const dataFinalString = dateTimeNow.toISOString().split("T").at(0);
+
+        const mesString = this.definirMesString(dateTimeNow.getMonth());
+
+        this.configuracaoPeriodoAnalise = {
+          dataInicialString,
+          dataFinalString,
+          mesString
         }
 
         this.authService.getUser((response) => {
           this.usuario = response.usuario;
 
-          this.transacaoService.getListaTransacoes(this.usuario.id, this.mesAnoFiltragem, (response) => {
+          this.transacaoService.getListaTransacoes(this.usuario.id, this.configuracaoPeriodoAnalise, (response) => {
             this.listaTransacoes = response.transacoes;
           }, () => {});
-        }, () => {});
+        }, () => {
+          this.authService.clearToken();
+          this.router.navigate(["entrar"]);
+        });
       }, () => {
         this.authService.clearToken();
         this.router.navigate(["entrar"]);
@@ -93,27 +95,20 @@ export class DashboardComponent {
   }
 
   abrirModalMesAno(): void {
-    this.modalRef = this.modalService.open(ModalMesAnoComponent);
+    this.modalRef = this.modalService.open(ModalConfiguracaoPeriodoAnalise);
 
-    this.modalRef.result.then((mesAno) => {
-      const dateTimeNow = new Date(mesAno.anoInicio, mesAno.mesInicio, 1);
-      const dateTimeTwo = new Date(dateTimeNow);
+    this.modalRef.result.then((configuracao) => {
+      const dateTimeNow = new Date(configuracao.dataInicialString);
 
-      dateTimeTwo.setMonth(dateTimeTwo.getMonth() + 1);
-
-      const mesAnoFiltragem = {
-        diaInicio: dateTimeNow.getDate(),
-        mesInicio: dateTimeNow.getMonth(),
-        anoInicio: dateTimeNow.getFullYear(),
-        diaFim: dateTimeTwo.getDate(),
-        mesFim: dateTimeTwo.getMonth(),
-        anoFim: dateTimeTwo.getFullYear(),
+      this.configuracaoPeriodoAnalise = {
+        dataInicialString: configuracao.dataInicialString,
+        dataFinalString: configuracao.dataFinalString,
         mesString: this.definirMesString(dateTimeNow.getMonth())
       };
 
-      this.mesAnoFiltragem = mesAnoFiltragem;
+      this.configuracaoPeriodoAnalise.mesString = this.definirMesString(dateTimeNow.getMonth());
 
-      this.transacaoService.getListaTransacoes(this.usuario.id, mesAnoFiltragem, (response) => {
+      this.transacaoService.getListaTransacoes(this.usuario.id, this.configuracaoPeriodoAnalise, (response) => {
         this.listaTransacoes = response.transacoes;
       }, () => {});
     }).catch(() => {});

@@ -30,7 +30,7 @@
       </thead>
       <tbody *ngFor="let grupo of agruparTransacoesPorCategoria(listaTransacoes)">
         <tr>
-          <td class="text-left">{{ grupo.categoria }}</td>
+          <td class="text-left">{{ buscarLabelCategoria(grupo.categoria) }}</td>
           <td class="text-center">{{ grupo.percentual.toFixed(2) }} %</td>
           <td class="text-right">{{ formataValor(grupo.valorTotal) }}</td>
         </tr>
@@ -41,12 +41,11 @@
     <h2 class="text-lg mb-1">Extrato</h2>
     <ul *ngFor="let transacao of listaTransacoes" class="text-xl grid gap-2" style="line-height: 1;">
       <li class="grid grid-cols-[auto_1fr_auto] items-center gap-2">
-        <img [src]="transacao.tipoTransacao.startsWith('Despesa') ?
-            'seta-para-a-direita (1).png' : 'seta-para-a-direita.png'"
-          [class]="transacao.tipoTransacao.startsWith('Despesa') ? 
+        <img [src]="transacao.tipoTransacao == TipoTransacaoEnum.DESPESA_FIXA || transacao.tipoTransacao == TipoTransacaoEnum.DESPESA_COMUM ? 'seta-para-a-direita (1).png' : 'seta-para-a-direita.png'"
+          [class]="transacao.tipoTransacao == TipoTransacaoEnum.DESPESA_FIXA || transacao.tipoTransacao == TipoTransacaoEnum.DESPESA_COMUM ? 
             'block sm:hidden md:block rotate-90 max-h-10' : 'block sm:hidden md:block -rotate-90 max-h-10'"
         >
-        <div>{{ transacao.descricao }}<br *ngIf="transacao.categoria"><span *ngIf="transacao.categoria" class="text-sm">{{ transacao.categoria }}</span></div>
+        <div>{{ transacao.descricao }}<br *ngIf="transacao.categoria"><span *ngIf="transacao.categoria" class="text-sm">{{ buscarLabelCategoria(transacao.categoria) }}</span></div>
         <span class="font-semibold">R$ {{ formataValor(transacao.valor) }}</span>
       </li>
     </ul>

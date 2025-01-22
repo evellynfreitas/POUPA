@@ -1,0 +1,26 @@
+<div class="grid grid-cols-[3rem_1fr]">
+  <div class="bg-orange"></div>
+  <div class="bg-beige p-4">
+    <h2 class="font-poppins text-2xl text-orange font-semibold">Período de Análise</h2>
+    <div class="grid gap-4 mt-4">
+      <div class="flex flex-col gap-1 items-start justify-start">
+        <label for="dataInicial" class="text-orange text-lg">Data Inicial</label>
+        <input [(ngModel)]="dataInicialString" [max]="dataFinalString"
+          id="dataInicial" name="dataInicial" type="date"
+          class="text-xl text-gray-950 px-6 py-2 rounded-xl min-w-60"
+        >
+      </div>
+      <div class="flex flex-col gap-1 items-start justify-start">
+        <label for="dataFinal" class="text-orange text-lg">Data Final</label>
+        <input [(ngModel)]="dataFinalString" [min]="dataInicialString"
+          id="dataFinal" name="dataFinal" type="date"
+          class="text-xl text-gray-950 px-6 py-2 rounded-xl min-w-60"
+        >
+      </div>
+    </div>
+    <div class="flex justify-end items-end gap-2 mt-4">
+      <button (click)="activeModal.dismiss()" class="text-lg font-poppins font-semibold text-orange rounded-bl-3xl px-6 py-2 bg-[transparent_!important]">Fechar</button>
+      <button (click)="salvar()" class="text-lg font-poppins font-semibold text-white rounded-bl-3xl bg-orange px-6 py-2">Salvar</button>
+    </div>
+  </div>
+</div>

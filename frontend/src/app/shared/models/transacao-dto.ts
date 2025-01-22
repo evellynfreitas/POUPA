@@ -1,9 +1,13 @@
+import { CategoriaDespesaEnum } from "../enums/categoria-despesa.enum";
+import { TipoTransacaoEnum } from "../enums/tipo-despesa.enum";
+
 export class TransacaoDTO {
-  id: number;
+  id?: number;
   descricao: string;
   valor: number;
-  tipoTransacao: string;
-  categoria: string;
-  criadoEm: string;
-  idUsuario: number;
+  tipoTransacao: TipoTransacaoEnum;
+  categoria: CategoriaDespesaEnum;
+  isDespesaFixa: boolean;
+  criadoEm?: string;
+  idUsuario?: number;
 }
