@@ -2,8 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from "@angular/core";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 import { TransacaoDTO } from '../../shared/models/transacao-dto';
-import { ModalDespesaComponent } from "../modal-despesa/modal-despesa.component";
+import { ModalNovaTransacaoComponent } from "../modal-nova-transacao/modal-nova-transacao.component";
 import { TransacaoService } from './../../shared/services/transacao.service';
+import { CategoriaDespesaEnum, CategoriaDespesaEnumUtil } from '../../shared/enums/categoria-despesa.enum';
+import { TipoTransacaoEnum } from '../../shared/enums/tipo-despesa.enum';
 
 @Component({
   selector: "dashboard-despesas",
@@ -16,6 +18,10 @@ export class DashboardDespesasComponent {
 
   @Input() listaTransacoes: TransacaoDTO[];
   @Input() idUsuario: number;
+
+  TipoTransacaoEnum = TipoTransacaoEnum;
+  CategoriaDespesaEnumUtil = CategoriaDespesaEnumUtil;
+
   private modalRef: NgbModalRef;
 
   constructor(
@@ -23,7 +29,7 @@ export class DashboardDespesasComponent {
   ) {}
 
   abrirModalDespesa(): void {
-    this.modalRef = this.modalService.open(ModalDespesaComponent, {
+    this.modalRef = this.modalService.open(ModalNovaTransacaoComponent, {
       size: "md"
     });
 
@@ -44,8 +50,13 @@ export class DashboardDespesasComponent {
 
   definirTotalDespesa(transacoes: TransacaoDTO[]): number {
     const despesas = transacoes.filter(
-      (transacao) => transacao.tipoTransacao.startsWith("Despesa"));
+      (transacao) => transacao.tipoTransacao === TipoTransacaoEnum.DESPESA_COMUM || transacao.tipoTransacao === TipoTransacaoEnum.DESPESA_FIXA
+    );
 
     return despesas.reduce((soma, transacao) => soma + transacao.valor, 0);
+  }
+
+  buscarLabelCategoria(categoria: string) {
+    return CategoriaDespesaEnumUtil.buscarLabelCategoria(categoria as CategoriaDespesaEnum);
   }
 }

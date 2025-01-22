@@ -13,19 +13,15 @@ export class TransacaoService {
 
   public getListaTransacoes(
     idUsuario: number,
-    mesAnoConfig: any,
+    configuracaoPeriodoAnalise: any,
     successCallback: (response: any) => void,
     errorCallback: (error: any) => void
   ) {
     let URL = `${this.BASE_URL}/transactions?id_usuario=${idUsuario}`;
 
-    if (mesAnoConfig != null) {
-      URL += `&dia_inicio=${mesAnoConfig.diaInicio}`;
-      URL += `&mes_inicio=${mesAnoConfig.mesInicio + 1}`;
-      URL += `&ano_inicio=${mesAnoConfig.anoInicio}`;
-      URL += `&dia_fim=${mesAnoConfig.diaFim}`;
-      URL += `&mes_fim=${mesAnoConfig.mesFim + 1}`;
-      URL += `&ano_fim=${mesAnoConfig.anoFim}`;
+    if (configuracaoPeriodoAnalise != null) {
+      URL += `&data_inicial=${configuracaoPeriodoAnalise.dataInicialString}`;
+      URL += `&data_final=${configuracaoPeriodoAnalise.dataFinalString}`;
     }
 
     this.httpClient.get(URL, {

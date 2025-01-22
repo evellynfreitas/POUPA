@@ -229,23 +229,19 @@ def transaction():
 def get_transactions():
     try:
         id_usuario = int(request.args.get('id_usuario'))
-        dia_inicio = int(request.args.get('dia_inicio'))
-        mes_inicio = int(request.args.get('mes_inicio'))
-        ano_inicio = int(request.args.get('ano_inicio'))
-        dia_fim = int(request.args.get('dia_fim'))
-        mes_fim = int(request.args.get('mes_fim'))
-        ano_fim = int(request.args.get('ano_fim'))
+        data_inicial = request.args.get('data_inicial').split("-")
+        data_final = request.args.get('data_final').split("-")
 
-        if not id_usuario:
+        if not id_usuario or not data_inicial or not data_final:
             return jsonify({'message': 'O campo id_usuario é obrigatório!'}), 400
 
-        data_inicio = datetime(ano_inicio, mes_inicio, dia_inicio)
-        data_fim = datetime(ano_fim, mes_fim, dia_fim)
+        data_inicio = datetime(int(data_inicial[0]), int(data_inicial[1]), int(data_inicial[2]))
+        data_final = datetime(int(data_final[0]), int(data_final[1]), int(data_final[2]))
 
         transacoes = Transacao.query.filter(
             Transacao.id_usuario == id_usuario
         ).filter(
-            Transacao.criado_em.between(data_inicio, data_fim)
+            Transacao.criado_em.between(data_inicio, data_final)
         ).all()
 
         if not transacoes:

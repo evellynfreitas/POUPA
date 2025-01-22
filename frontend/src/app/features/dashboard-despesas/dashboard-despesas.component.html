@@ -5,7 +5,7 @@
     <span class="text-xl font-bold">R$ {{ formataValor(definirTotalDespesa(listaTransacoes)) }}</span>
   </div>
   <div class="h-full sm:col-span-3">
-    <button (click)="abrirModalDespesa()" class="bg-orange text-lg font-poppins font-semibold text-beige px-6 py-4 rounded-2xl w-full sm:w-auto">Adicionar <br class="hidden sm:block">Despesa</button>
+    <button (click)="abrirModalDespesa()" class="bg-orange text-lg font-poppins font-semibold text-beige px-6 py-4 rounded-2xl w-full sm:w-auto">Adicionar <br class="hidden sm:block">Transação</button>
   </div>
   <div class="h-full bg-white sm:col-span-6 px-6 py-4 rounded-2xl text-orange font-poppins overflow-x-scroll md:overflow-hidden">
     <h2 class="text-xl mb-1">Extrato das Despesas</h2>
@@ -19,10 +19,10 @@
         </tr>
       </thead>
       <tbody *ngFor="let transacao of listaTransacoes">
-        <tr *ngIf="transacao.tipoTransacao.startsWith('Despesa')">
+        <tr *ngIf="transacao.tipoTransacao === TipoTransacaoEnum.DESPESA_COMUM || transacao.tipoTransacao === TipoTransacaoEnum.DESPESA_FIXA">
           <td class="px-4 pt-2 text-left">{{ transacao.descricao }}</td>
-          <td class="px-4 pt-2 text-center">{{ transacao.categoria }}</td>
-          <td class="px-4 pt-2 text-center">{{ transacao.tipoTransacao === "Despesa Fixa" ? 'X' : '' }}</td>
+          <td class="px-4 pt-2 text-center">{{ buscarLabelCategoria(transacao.categoria) }}</td>
+          <td class="px-4 pt-2 text-center">{{ transacao.tipoTransacao === TipoTransacaoEnum.DESPESA_FIXA ? 'X' : '' }}</td>
           <td class="px-4 pt-2 font-semibold text-right">R$ {{ formataValor(transacao.valor) }}</td>
         </tr>
       </tbody>

@@ -1,0 +1,53 @@
+<div class="grid grid-cols-[3rem_1fr]">
+  <div class="bg-orange"></div>
+  <div class="bg-beige p-4">
+    <h2 class="font-poppins text-2xl text-orange font-semibold">Nova Transação</h2>
+    <div class="grid gap-4 mt-4">
+      <div class="flex flex-col gap-1 items-start justify-start">
+        <label for="descricao" class="text-orange text-lg">Descrição</label>
+        <input [(ngModel)]="novaTransacao.descricao" type="text" id="descricao" name="descricao" class="text-xl text-gray-950 px-6 py-2 rounded-xl">
+      </div>
+      <div class="flex flex-col gap-1 items-start justify-start">
+        <label for="valor" class="text-orange text-lg">Valor (R$)</label>
+        <input [(ngModel)]="novaTransacao.valor" type="text" id="valor" name="valor" class="text-xl text-gray-950 px-6 py-2 rounded-xl">
+      </div>
+      <div class="flex flex-col gap-1 items-start justify-start">
+        <label for="tipoTransacao" class="text-orange text-lg">Tipo de Transação</label>
+        <select [(ngModel)]="novaTransacao.tipoTransacao"
+          id="tipoTransacao" name="tipoTransacao"
+          class="text-xl text-gray-950 px-6 py-2 rounded-xl"
+        >
+          <option [value]=""></option>
+          <option *ngFor="let opcao of TipoTransacaoEnumUtil.listarOpcoesEnum()" [value]="opcao">{{ TipoTransacaoEnumUtil.buscarLabelCategoria(opcao) }}</option>
+        </select>
+      </div>
+      <div class="flex flex-col gap-1 items-start justify-start">
+        <label for="categoria" class="text-orange text-lg">Categoria</label>
+        <select [(ngModel)]="novaTransacao.categoria"
+          id="categoria" name="categoria"
+          class="text-xl text-gray-950 px-6 py-2 rounded-xl"
+        >
+          <option *ngFor="let opcao of CategoriaDespesaEnumUtil.listarOpcoesEnum()" [value]="opcao">{{ CategoriaDespesaEnumUtil.buscarLabelCategoria(opcao) }}</option>
+        </select>
+      </div>
+      <div class="flex flex-col gap-1 items-start justify-start bg-beige">
+        <p for="categoria" class="text-orange text-lg font-medium">É uma despesa fixa?</p>
+        <div class="flex gap-4">
+          <div class="flex gap-2">
+            <input [(ngModel)]="novaTransacao.isDespesaFixa" id="sim" name="despesaFixa" type="radio" [value]="true">
+            <label for="sim" class="text-orange">Sim</label>
+          </div>
+          <div class="flex gap-2">
+            <input [(ngModel)]="novaTransacao.isDespesaFixa" id="nao" name="despesaFixa" type="radio" [value]="false">
+            <label for="nao" class="text-orange">Não</label>
+          </div>
+        </div>
+      </div>
+      <p class="text-red-800 font-semibold font-poppins">{{ mensagemErro }}</p>
+    </div>
+    <div class="flex justify-end items-end gap-2 mt-4">
+      <button (click)="activeModal.dismiss()" class="text-lg font-poppins font-semibold text-orange rounded-bl-3xl px-6 py-2 bg-[transparent_!important]">Fechar</button>
+      <button (click)="salvar()" class="text-lg font-poppins font-semibold text-white rounded-bl-3xl bg-orange px-6 py-2">Salvar</button>
+    </div>
+  </div>
+</div>

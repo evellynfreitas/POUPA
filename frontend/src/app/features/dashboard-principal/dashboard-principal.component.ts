@@ -1,6 +1,8 @@
+import { CommonModule } from "@angular/common";
 import { Component, Input } from "@angular/core";
 import { TransacaoDTO } from "../../shared/models/transacao-dto";
-import { CommonModule } from "@angular/common";
+import { CategoriaDespesaEnum, CategoriaDespesaEnumUtil } from './../../shared/enums/categoria-despesa.enum';
+import { TipoTransacaoEnum } from './../../shared/enums/tipo-despesa.enum';
 
 @Component({
   selector: "dashboard-principal",
@@ -11,6 +13,9 @@ import { CommonModule } from "@angular/common";
 export class DashboardPrincipalComponent {
 
   @Input() listaTransacoes: TransacaoDTO[];
+
+  TipoTransacaoEnum = TipoTransacaoEnum;
+  CategoriaDespesaEnumUtil = CategoriaDespesaEnumUtil;
 
   formataValor(valor: number): string {
     return valor.toLocaleString(
@@ -24,21 +29,21 @@ export class DashboardPrincipalComponent {
 
   definirTotalDespesa(transacoes: TransacaoDTO[]): number {
     const despesas = transacoes.filter(
-      (transacao) => transacao.tipoTransacao.startsWith("Despesa"));
+      (transacao) => transacao.tipoTransacao === TipoTransacaoEnum.DESPESA_COMUM || transacao.tipoTransacao === TipoTransacaoEnum.DESPESA_FIXA);
   
     return despesas.reduce((soma, transacao) => soma + transacao.valor, 0);
   }
 
   definirSaldoTotal(transacoes: TransacaoDTO[]): number {
     const entradas = transacoes.filter(
-      (transacao) => !transacao.tipoTransacao.startsWith("Despesa"));
+      (transacao) => transacao.tipoTransacao !== TipoTransacaoEnum.DESPESA_COMUM && transacao.tipoTransacao !== TipoTransacaoEnum.DESPESA_FIXA);
   
     return entradas.reduce((soma, transacao) => soma + transacao.valor, 0);
   }
   
   agruparTransacoesPorCategoria(transacoes: TransacaoDTO[]): CategoriaResumo[] {
     const despesas = transacoes.filter(
-      (transacao) => transacao.tipoTransacao.startsWith("Despesa"));
+      (transacao) => transacao.tipoTransacao === TipoTransacaoEnum.DESPESA_COMUM || transacao.tipoTransacao === TipoTransacaoEnum.DESPESA_FIXA);
   
     const totalDespesas = despesas.reduce((soma, transacao) => soma + transacao.valor, 0);
   
@@ -55,6 +60,10 @@ export class DashboardPrincipalComponent {
       valorTotal,
       percentual: totalDespesas > 0 ? (valorTotal / totalDespesas) * 100 : 0,
     }));
+  }
+
+  buscarLabelCategoria(categoria: string) {
+    return CategoriaDespesaEnumUtil.buscarLabelCategoria(categoria as CategoriaDespesaEnum);
   }
 }
 
