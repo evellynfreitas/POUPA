@@ -112,3 +112,7 @@
 .subtitle {
   @apply font-anton text-green-normal text-2xl mt-6 text-center;
 }
+
+.green-bg {
+  background-color: var(--color-green-normal) !important;
+}

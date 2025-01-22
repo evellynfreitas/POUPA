@@ -6,6 +6,11 @@ import { DashboardComponent } from './features/dashboard/dashboard.component';
 
 export const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full'
+  },
+  {
     path: "home",
     pathMatch: "full",
     component: HomeComponent
